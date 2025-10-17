@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-int gScreenWidth = 480;
+int gScreenWidth = 640;
 int gScreenHeight = 480;
 SDL_Window *gGraphicsApplicationWindow = nullptr;
 SDL_GLContext gOpenGLContext = nullptr;
@@ -95,9 +95,9 @@ void GetOpenGLVersionInfo() {
 }
 
 void VertexSpecification() {
-  const std::vector<GLfloat> vertexData{-0.8f, -0.8f, 0.0f, 1.0f, 0.0f,  0.0f,
-                                        0.8f,  -0.8f, 0.0f, 0.6f, 0.0f,  0.8f,
-                                        0.0f,  0.0f,  0.0f, 1.0f, 0.75f, 0.8f};
+  const std::vector<GLfloat> vertexData{-0.5f, -0.5f, 0.0f, 1.0f, 0.0f,  0.0f,
+                                        0.5f,  -0.5f, 0.0f, 0.6f, 0.0f,  0.8f,
+                                        -0.5f, 0.5f,  0.0f, 1.0f, 0.75f, 0.8f};
 
   glGenVertexArrays(1, &gVertexArrayObject);
   glBindVertexArray(gVertexArrayObject);
