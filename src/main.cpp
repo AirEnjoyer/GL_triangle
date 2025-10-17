@@ -139,6 +139,16 @@ void InitializeProgram() {
   SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
   SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 
+  SDL_DisplayMode currentDisplayMode;
+  if (SDL_GetCurrentDisplayMode(0, &currentDisplayMode) == 0) {
+    gScreenWidth = currentDisplayMode.w;
+    gScreenHeight = currentDisplayMode.h;
+    std::cout << "Detected screen resolution: " << gScreenWidth << "x"
+              << gScreenHeight << std::endl;
+  } else {
+    std::cerr << "Could not get display mode: " << SDL_GetError() << std::endl;
+  }
+
   gGraphicsApplicationWindow = SDL_CreateWindow(
       "OpenGL Window", 0, 0, gScreenWidth, gScreenHeight, SDL_WINDOW_OPENGL);
   if (gGraphicsApplicationWindow == nullptr) {
