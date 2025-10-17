@@ -95,9 +95,46 @@ void GetOpenGLVersionInfo() {
 }
 
 void VertexSpecification() {
-  const std::vector<GLfloat> vertexData{-0.5f, -0.5f, 0.0f, 1.0f, 0.0f,  0.0f,
-                                        0.5f,  -0.5f, 0.0f, 0.6f, 0.0f,  0.8f,
-                                        -0.5f, 0.5f,  0.0f, 1.0f, 0.75f, 0.8f};
+  const std::vector<GLfloat> vertexData{
+      // First Triangle
+      -0.5f,
+      -0.5f,
+      0.0f,
+      1.0f,
+      0.0f,
+      0.0f,
+      0.5f,
+      -0.5f,
+      0.0f,
+      0.6f,
+      0.0f,
+      0.8f,
+      -0.5f,
+      0.5f,
+      0.0f,
+      1.0f,
+      0.75f,
+      0.8f,
+      // Second Triangle
+      0.5f,
+      -0.5f,
+      0.0f,
+      0.6f,
+      0 - 0.5f,
+      0.5f,
+      0.0f,
+      1.0f,
+      0.75f,
+      0.8f,
+      0.0f,
+      0.8f,
+      -0.5f,
+      0.5f,
+      0.0f,
+      1.0f,
+      0.0f,
+      0.0f,
+  };
 
   glGenVertexArrays(1, &gVertexArrayObject);
   glBindVertexArray(gVertexArrayObject);
