@@ -1,12 +1,12 @@
 cmake_minimum_required(VERSION 4.0)
 
-project(basic C CXX)
+project(triangle C CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 find_package(SDL2 REQUIRED)
-find_package(triangle REQUIRED)
+find_package(OpenGL REQUIRED)
 set(SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src")
 file(GLOB SOURCE_FILES "${SOURCE_DIR}/*.cpp")
 add_library(glad STATIC
