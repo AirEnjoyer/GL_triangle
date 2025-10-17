@@ -5,14 +5,13 @@
 #include <string>
 #include <vector>
 
-int gScreenWidth = 640;
+int gScreenWidth = 480;
 int gScreenHeight = 480;
 SDL_Window *gGraphicsApplicationWindow = nullptr;
 SDL_GLContext gOpenGLContext = nullptr;
 
 GLuint gVertexArrayObject = 0;
 GLuint gVertexBufferObject = 0;
-GLuint gVertexBufferObject2 = 0;
 GLuint gGraphicsPipelineShaderProgram = 0;
 
 bool gQuit = false;
@@ -96,31 +95,25 @@ void GetOpenGLVersionInfo() {
 }
 
 void VertexSpecification() {
-  const std::vector<GLfloat> vertexPosition{
-      -0.8f, -0.8f, 0.0f, 0.8f, -0.8f, 0.0f, 0.0f, 0.8f, 0.0f,
-  };
-
-  const std::vector<GLfloat> vertexColors{1.0f, 0.0f, 0.0f,  0.6f, 0.0f,
-                                          0.8f, 1.0f, 0.75f, 0.8f};
+  const std::vector<GLfloat> vertexData{-0.8f, -0.8f, 0.0f, 1.0f, 0.0f,  0.0f,
+                                        0.8f,  -0.8f, 0.0f, 0.6f, 0.0f,  0.8f,
+                                        0.0f,  0.0f,  0.0f, 1.0f, 0.75f, 0.8f};
 
   glGenVertexArrays(1, &gVertexArrayObject);
   glBindVertexArray(gVertexArrayObject);
 
   glGenBuffers(1, &gVertexBufferObject);
   glBindBuffer(GL_ARRAY_BUFFER, gVertexBufferObject);
-  glBufferData(GL_ARRAY_BUFFER, vertexPosition.size() * sizeof(GLfloat),
-               vertexPosition.data(), GL_STATIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER, vertexData.size() * sizeof(GLfloat),
+               vertexData.data(), GL_STATIC_DRAW);
 
   glEnableVertexAttribArray(0);
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void *)0);
-
-  glGenBuffers(1, &gVertexBufferObject2);
-  glBindBuffer(GL_ARRAY_BUFFER, gVertexBufferObject2);
-  glBufferData(GL_ARRAY_BUFFER, vertexColors.size() * sizeof(GLfloat),
-               vertexColors.data(), GL_STATIC_DRAW);
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 6,
+                        (void *)0);
 
   glEnableVertexAttribArray(1);
-  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (void *)0);
+  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 6,
+                        (GLvoid *)(sizeof(GLfloat) * 3));
 
   glBindVertexArray(0);
   glDisableVertexAttribArray(0);
@@ -138,11 +131,6 @@ void InitializeProgram() {
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
   SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
   SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
-
-  SDL_DisplayMode currentDisplayMode;
-  SDL_GetCurrentDisplayMode(0, &currentDisplayMode);
-  gScreenWidth = currentDisplayMode.w;
-  gScreenHeight = currentDisplayMode.h;
 
   gGraphicsApplicationWindow = SDL_CreateWindow(
       "OpenGL Window", 0, 0, gScreenWidth, gScreenHeight, SDL_WINDOW_OPENGL);
