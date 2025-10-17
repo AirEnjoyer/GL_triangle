@@ -23,7 +23,7 @@ const std::string gFragmentShaderSource =
     "out vec4 color;\n"
     "void main()\n"
     "{\n"
-    "    color = vec4(0.705882f, 0.705882f, 0.705882f, 1.f);\n"
+    "    color = vec4(0.772549f, 0.188235f, 0.188235f, 1.f);\n"
     "}\n";
 
 GLuint gVertexArrayObject = 0;
