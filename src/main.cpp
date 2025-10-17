@@ -1,6 +1,8 @@
 #include <SDL2/SDL.h>
+#include <fstream>
 #include <glad/glad.h>
 #include <iostream>
+#include <string>
 #include <vector>
 
 int gScreenWidth = 640;
@@ -8,7 +10,26 @@ int gScreenHeight = 480;
 SDL_Window *gGraphicsApplicationWindow = nullptr;
 SDL_GLContext gOpenGLContext = nullptr;
 
+GLuint gVertexArrayObject = 0;
+GLuint gVertexBufferObject = 0;
+GLuint gVertexBufferObject2 = 0;
+GLuint gGraphicsPipelineShaderProgram = 0;
+
 bool gQuit = false;
+
+std::string LoadShaderAsString(const std::string &filename) {
+  std::string result = "";
+  std::string line = "";
+  std::ifstream myFile(filename.c_str());
+
+  if (myFile.is_open()) {
+    while (std::getline(myFile, line)) {
+      result += line + '\n';
+    }
+    myFile.close();
+  };
+  return result;
+}
 
 const std::string gVertexShaderSource =
     "#version 410 core\n"
@@ -25,10 +46,6 @@ const std::string gFragmentShaderSource =
     "{\n"
     "    color = vec4(0.772549f, 0.188235f, 0.188235f, 1.f);\n"
     "}\n";
-
-GLuint gVertexArrayObject = 0;
-GLuint gVertexBufferObject = 0;
-GLuint gGraphicsPipelineShaderProgram = 0;
 
 GLuint CompileShader(GLuint type, const std::string &source) {
   GLuint shaderObject;
@@ -63,8 +80,11 @@ GLuint CreateShaderProgram(const std::string &vertexShaderSource,
 }
 
 void CreateGraphicsPipeline() {
+  std::string vertexShaderSource = LoadShaderAsString("./shaders/vert.glsl");
+  std::string fragmentShaderSource = LoadShaderAsString("./shaders/frag.glsl");
+
   gGraphicsPipelineShaderProgram =
-      CreateShaderProgram(gVertexShaderSource, gFragmentShaderSource);
+      CreateShaderProgram(vertexShaderSource, fragmentShaderSource);
 }
 
 void GetOpenGLVersionInfo() {
@@ -80,6 +100,9 @@ void VertexSpecification() {
       -0.8f, -0.8f, 0.0f, 0.8f, -0.8f, 0.0f, 0.0f, 0.8f, 0.0f,
   };
 
+  const std::vector<GLfloat> vertexColors{1.0f, 0.0f, 0.0f,  0.6f, 0.0f,
+                                          0.8f, 1.0f, 0.75f, 0.8f};
+
   glGenVertexArrays(1, &gVertexArrayObject);
   glBindVertexArray(gVertexArrayObject);
 
@@ -87,10 +110,21 @@ void VertexSpecification() {
   glBindBuffer(GL_ARRAY_BUFFER, gVertexBufferObject);
   glBufferData(GL_ARRAY_BUFFER, vertexPosition.size() * sizeof(GLfloat),
                vertexPosition.data(), GL_STATIC_DRAW);
+
   glEnableVertexAttribArray(0);
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void *)0);
+
+  glGenBuffers(1, &gVertexBufferObject2);
+  glBindBuffer(GL_ARRAY_BUFFER, gVertexBufferObject2);
+  glBufferData(GL_ARRAY_BUFFER, vertexColors.size() * sizeof(GLfloat),
+               vertexColors.data(), GL_STATIC_DRAW);
+
+  glEnableVertexAttribArray(1);
+  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (void *)0);
+
   glBindVertexArray(0);
   glDisableVertexAttribArray(0);
+  glDisableVertexAttribArray(1);
 };
 
 void InitializeProgram() {

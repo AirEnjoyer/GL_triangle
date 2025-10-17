@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 4.0)
+cmake_minimum_required(VERSION 3.25)
 
 project(triangle C CXX)
 
@@ -26,3 +26,4 @@ glad
 ${SDL2_LIBRARIES}
 OpenGL::GL
 )
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/shaders DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
